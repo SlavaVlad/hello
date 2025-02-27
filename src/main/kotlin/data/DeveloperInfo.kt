@@ -1,8 +1,21 @@
 package com.nano.data
 
-import jdk.internal.org.jline.utils.Colors.s
-import korlibs.time.internal.TemporalKlockInternalJvm
+import korlibs.time.months
+import korlibs.time.years
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Clock.System
+import kotlinx.datetime.DatePeriod
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
+import kotlinx.datetime.toJavaInstant
+import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toLocalDateTime
 import java.awt.Color
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
 
 data class Technology(
     val name: String,
@@ -137,9 +150,9 @@ data class Developer(
     val techStack: List<Technology> = projects.flatMap { it.technologies }.distinct()
 }
 
-val developer = Developer(
+val fullDeveloper = Developer(
     name = "Владислав Владимиров",
-    bio = "Привет! Я разработчик, студент 2-го курса Программной Инженерии и нейротехнологий университета ИТМО, 20 y.o. \n\n\n<br>Программированием увлекался с 5 класса, начинал с робототехники и IoT. <br><br>Сейчас в основном занимаюсь разработкой смарт-контрактов для блокчейна TON, увлекаюсь технологиями децентрализации, также большими языковыми моделями и их принципами работы. <br><br>В свободное время читаю статьи на Хабре, развиваю с десяток пет-проектов разной степени готовности.",
+    bio = "Привет! Я разработчик, студент 2-го курса Программной Инженерии и нейротехнологий университета ИТМО, ${age()} лет. \n\n\n<br>Программированием увлекался с 5 класса, начинал с робототехники и IoT. <br><br>Сейчас в основном занимаюсь разработкой смарт-контрактов для блокчейна TON, увлекаюсь технологиями децентрализации, также большими языковыми моделями и их принципами работы. <br><br>В свободное время читаю статьи на Хабре, развиваю с десяток пет-проектов разной степени готовности.",
     projects = listOf(
         Project(
             name = "RedChain",
@@ -205,6 +218,91 @@ val developer = Developer(
         "2018 - Первый макет на 3D принтере с роботизацией Arduino nano",
         "2019 - Первый сайт на HTML/CSS + JS, курсы Fructcode",
         "2020 - Проект \"Твой Дневник\" - мобильный аналог системы Элетронный дневник с упором на персонализацию",
+        "2021 - Первые проекты на фрилансе, переход с Java на Koltin раз и навсегда",
+        "2022 - Первые шаги в блокчейн-технологиях, поступление в ИТМО на ПИиКТ",
+        "2023 - Первые учебные смарт-контракты, разработка мобильных приложений под заказ, старт в геймдеве на UE",
+        "2024 - Первый успешный криптопроект в GameFi, старт в коммерческой блокчейн-разработке",
+        "2025 - Крупный собственный блокчейн-проект"
+    ),
+    links = listOf(
+        Link("GitHub", "https://github.com/SlavaVlad", "static/svg/github.svg"),
+        Link("Telegram", "https://t.me/smartcontractman", "static/svg/telegram.svg"),
+    )
+)
+
+fun calculateAge(birthDate: LocalDate): Int {
+    val currentDate = System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    val yearsDifference = currentDate.year - birthDate.year
+    val adjustedBirthDate = birthDate.plus(DatePeriod(years = yearsDifference))
+    return if (currentDate < adjustedBirthDate) yearsDifference - 1 else yearsDifference
+}
+
+fun age(): Int {
+    val birthDate = LocalDate(2004, 11, 3)
+    val age = calculateAge(birthDate)
+    return age
+}
+
+val developer = Developer(
+    name = "Владислав Владимиров",
+    bio = "Привет! Я разработчик, студент 2-го курса Программной Инженерии и нейротехнологий университета ИТМО, ${
+        age()
+    } лет. <br><br>Программированием увлекался с 5 класса, начинал с робототехники и IoT. <br><br>Сейчас в основном занимаюсь разработкой смарт-контрактов для блокчейна TON, увлекаюсь технологиями децентрализации, также большими языковыми моделями и их принципами работы. <br><br>В свободное время читаю статьи на Хабре, развиваю с десяток пет-проектов разной степени готовности.",
+    projects = listOf(
+        Project(
+            name = "RedChain",
+            description = "Софт форк TON, созданный для быстрой обработки коротких сообщений, валидаторы по принципу BSC. Всё задумывается ради очень специфичного и большого DeFi/GameFi протокола DGB",
+            status = ProjectStatus.IN_PROGRESS,
+            technologies = listOf(Technology.ton, Technology.tact, Technology.kotlin, Technology.typescript)
+        ),
+        Project(
+            name = "Unsession",
+            description = "Тоже один из больших проектов. Создан для сбора обратной связи от студентов о преподавателях, упражняясь в обработке статистики, анализе текста с помощью LLM. Здесь я применяю все свои накопленные знания, например оплата за услуги принимается в криптовалюте TON",
+            status = ProjectStatus.IN_PROGRESS,
+            technologies = listOf(
+                Technology.kotlin,
+                Technology.keycloak,
+                Technology.crypto,
+                Technology.java,
+                Technology.github,
+                Technology.ton,
+                Technology.docker,
+                Technology.postgres
+            )
+        ),
+        Project(
+            name = "Enceladus",
+            description = "С технической точки зрения - мультиплеерная игра, используем процедурную генерацию для мира, решили проблему \"движущейся платформы\", разделил подлодку на 2 объекта, которые объединены через одну абстракцию. Таким образом добился ускорения работы на порядки. Для общения с ИИ используется LLM и распознавание голоса, всё при условии p2p-соединения",
+            status = ProjectStatus.PAUSED,
+            technologies = listOf(Technology.unrealEngine)
+        ),
+        Project(
+            name = "Таинственный GameFi проект",
+            description = "Завершён в 2024. Создавался командой, я разрабатывал Web3 часть и консультировал остальную команду по экономическим вопросам и интеграции с блокчейном. Проект был относительно успешен и принёс мне много нового опыта",
+            status = ProjectStatus.DONE,
+            technologies = listOf(Technology.ton, Technology.tact, Technology.typescript)
+        ),
+        Project(
+            name = "Telegram бот таинственного GameFi проекта",
+            description = "Выдерживал пиковые нагрузки до 1000 tps, был многоязычным. По сути было это небольшое руководство по проекту и путеводитель по сообществам на разных языках",
+            status = ProjectStatus.DONE,
+            technologies = listOf(Technology.kotlin, Technology.github)
+        ),
+        Project(
+            name = "Project 47",
+            description = "Был начат в 2023 году как тренировка в мультиплеерных технологиях UE 5.1.1. Это командный Sci-Fi шутер от первого лица с разрушаемым окружением. Отменён ибо исчерпал свой обучающий потенциал для меня",
+            status = ProjectStatus.CANCELED,
+            technologies = listOf(Technology.unrealEngine)
+        ),
+        Project(
+            name = "Прочие проекты",
+            description = "Небольшие проекты упомянуты не были такие как маленькие игры на Unreal Engine, смарт-контракты, которые не пошли в продакшн, различные боты и скрипты для автоматизации",
+            status = ProjectStatus.DONE,
+            technologies = listOf()
+        )
+    ),
+    journey = listOf(
+        "2015-2021 - Первые шаги, от робототехники до фриланса",
         "2021 - Первые проекты на фрилансе, переход с Java на Koltin раз и навсегда",
         "2022 - Первые шаги в блокчейн-технологиях, поступление в ИТМО на ПИиКТ",
         "2023 - Первые учебные смарт-контракты, разработка мобильных приложений под заказ, старт в геймдеве на UE",

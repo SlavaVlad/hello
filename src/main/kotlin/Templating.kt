@@ -1,7 +1,8 @@
 package com.nano
 
-import com.nano.data.nav.NavigationDialect
 import com.nano.data.developer
+import com.nano.data.nav.NavigationDialect
+import com.nano.data.fullDeveloper
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.response.*
