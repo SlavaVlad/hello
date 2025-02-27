@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth" xmlns:nav="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статьи</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-100 antialiased">
+<div class="container mx-auto px-4 py-12 max-w-6xl">
+    <!--    include navigation from ./navigation -->
+    <!--/*@thymesVar id="article" type="com.nano.data.Article"*/-->
+    <!--/*@thymesVar id="articles" type="com.nano.data.Articles"*/-->
+    <nav:navigation currentItemIndex="1"></nav:navigation>
+        <!-- Спиннер с последними статьями -->
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-gray-100 mb-8 flex items-center gap-3">
+                <span class="material-icons">new_releases</span>
+                Недавние статьи
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div th:each="article : ${articles.last}"
+                     class="bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all">
+                    <div class="flex flex-col h-full">
+                        <!-- Заголовок и подзаголовок -->
+                        <h3 th:text="${article.title}" class="text-lg font-semibold mb-2 text-gray-100"></h3>
+                        <p th:text="${article.subtitle}" class="text-gray-300 mb-4 flex-grow"></p>
+
+                        <!-- Дата создания -->
+                        <p class="text-sm text-gray-400 mb-4" th:text="${article.createdString}"></p>
+
+                        <!-- Ссылка на статью -->
+                        <a th:href="${'/articles/' + article.id}"
+                           class="text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-2">
+                            <span class="material-icons">arrow_forward</span>
+                            Читать далее
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Список всех статей -->
+        <section>
+            <h2 class="text-3xl font-bold text-gray-100 mb-8 flex items-center gap-3">
+                <span class="material-icons">list</span>
+                Все статьи
+            </h2>
+            <div class="space-y-6">
+                <div th:each="article : ${articles.all}"
+                     class="bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all">
+                    <div class="flex flex-col h-full">
+                        <!-- Заголовок и подзаголовок -->
+                        <h3 th:text="${article.title}" class="text-lg font-semibold mb-2 text-gray-100"></h3>
+                        <p th:text="${article.subtitle}" class="text-gray-300 mb-4 flex-grow"></p>
+
+                        <!-- Дата создания -->
+                        <p class="text-sm text-gray-400 mb-4" th:text="${article.createdString}"></p>
+
+                        <!-- Ссылка на статью -->
+                        <a th:href="${'/articles/' + article.id}"
+                           class="text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-2">
+                            <span class="material-icons">arrow_forward</span>
+                            Читать далее
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

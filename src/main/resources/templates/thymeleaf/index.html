@@ -1,0 +1,105 @@
+<!--/*@thymesVar id="developer" type="com.nano.data.Developer"*/-->
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth" xmlns:nav="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Визитка Разработчика</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-100 antialiased">
+<div class="container mx-auto px-4 py-12 max-w-6xl">
+    <!-- Навигация -->
+    <nav:navigation currentItemIndex="1"></nav:navigation>
+
+    <!-- Заголовок и био -->
+    <h1 th:text="${developer.name}" class="text-5xl font-bold text-gray-100 mb-6"></h1>
+    <p th:utext="${developer.bio}" class="text-xl text-gray-300 mb-16 max-w-3xl"></p>
+
+    <!--  section с моим технологическим стеком, оформленный по направлениям работы Kotlin/Android, Web3, Other  -->
+    <section class="mb-20">
+        <h2 class="text-3xl font-bold text-gray-100 mb-8 flex items-center gap-3">
+            <span class="material-icons">code</span>
+            Мой технологический стек
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div th:each="tech : ${developer.techStack}"
+                 class="bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all">
+                <div class="flex flex-col h-full">
+                    <h3 th:text="${tech.name}" class="text-lg font-semibold mb-2 text-gray-100"></h3>
+                    <p th:text="${tech.description}" class="text-gray-400 mb-4 flex-grow"></p>
+                    <ul class="text-gray-300 list-disc list-inside">
+                        <li th:each="lib : ${tech.libs}" th:text="${lib}"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Проекты -->
+    <section class="mb-20">
+        <h2 class="text-3xl font-bold text-gray-100 mb-8 flex items-center gap-3">
+            <span class="material-icons">code</span>
+            Проекты
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div th:each="project : ${developer.projects}"
+                 class="bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all">
+                <div class="flex flex-col h-full">
+                    <!--/*@thymesVar id="project" type="com.nano.data.Project"*/-->
+                    <h3 th:text="${project.name}" class="text-lg font-semibold mb-2 text-gray-100"></h3>
+                    <p th:text="${project.description}" class="text-gray-300 mb-4 flex-grow"></p>
+                    <p th:text="${project.status.literal}"
+                       class="text-sm mb-4 font-medium
+                           ${project.status == 'Завершен' ? 'text-green-400' : 'text-blue-400'}">
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span th:each="tech : ${project.technologies}"
+                              class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm bg-gray-700">
+                            <!--/*@thymesVar id="tech" type="com.nano.data.Technology"*/-->
+                            <img th:src="${tech.icon}" class="w-4 h-4 object-contain" alt="ic">
+                            <span th:text="${tech.name}" class="font-medium text-gray-100"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Путь -->
+    <section class="mb-20">
+        <h2 class="text-3xl font-bold text-gray-100 mb-8 flex items-center gap-3">
+            <span class="material-icons">timeline</span>
+            Мой путь
+        </h2>
+        <ul class="space-y-4 pl-4 border-l-2 border-gray-700">
+            <li th:each="step : ${developer.journey}"
+                th:text="${step}"
+                class="text-gray-300 pl-4 before:content-['–'] before:pr-2">
+            </li>
+        </ul>
+    </section>
+
+    <!-- Ссылки -->
+    <section>
+        <h2 class="text-3xl font-bold text-gray-100 mb-8 flex items-center gap-3">
+            <span class="material-icons">link</span>
+            Ссылки
+        </h2>
+        <div class="flex flex-wrap gap-4">
+            <a th:each="link : ${developer.links}"
+               th:href="${link.url}"
+               class="inline-flex items-center gap-3 rounded-lg px-5 py-3 text-sm font-medium transition-transform hover:-translate-y-0.5 bg-gray-700 hover:bg-gray-600"
+               target="_blank">
+                <!--/*@thymesVar id="link" type="com.nano.data.Link"*/-->
+                <!-- Иконка ссылки -->
+                <img th:src="${link.icon}" class="w-6 h-6" alt="icon">
+                <!-- Текст ссылки -->
+                <span th:text="${link.name}">Ссылка</span>
+            </a>
+        </div>
+    </section>
+</div>
+</body>
+</html>

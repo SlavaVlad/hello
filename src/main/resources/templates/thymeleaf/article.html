@@ -1,0 +1,48 @@
+<!--/*@thymesVar id="article" type="com.nano.data.Article"*/-->
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth" xmlns:nav="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${article.title}"></title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-100 antialiased">
+<!--    include navigation from ./navigation -->
+<nav:navigation currentItemIndex="1"></nav:navigation>
+<div class="container mx-auto px-4 py-12 max-w-6xl">
+    <!-- Заголовок статьи -->
+    <h1 th:text="${article.title}" class="text-5xl font-bold text-gray-100 mb-6"></h1>
+
+    <!-- Подзаголовок статьи -->
+    <p th:text="${article.subtitle}" class="text-xl text-gray-300 mb-8"></p>
+
+    <!-- Дата создания -->
+    <p class="text-sm text-gray-400 mb-8" th:text="${article.createdString}"></p>
+
+    <!-- Текст статьи -->
+    <div class="prose prose-invert max-w-none mb-12">
+        <p th:text="${article.content}"></p>
+    </div>
+
+    <!-- Дополнительные источники -->
+    <section class="mb-20">
+        <h2 class="text-3xl font-bold text-gray-100 mb-8 flex items-center gap-3">
+            <span class="material-icons">link</span>
+            Дополнительные источники
+        </h2>
+        <div class="flex flex-wrap gap-4">
+            <a th:each="link : ${article.additionalLinks}"
+               th:href="${link.url}"
+               class="inline-flex items-center gap-3 rounded-lg px-5 py-3 text-sm font-medium transition-transform hover:-translate-y-0.5 bg-gray-700 hover:bg-gray-600"
+               target="_blank">
+                <!--/*@thymesVar id="link" type="com.nano.data.Link"*/-->
+                <!--                <span class="material-icons" th:text="${link.icon}">link</span>-->
+                <span th:text="${link.name}" class="text-gray-100"></span>
+            </a>
+        </div>
+    </section>
+</div>
+</body>
+</html>

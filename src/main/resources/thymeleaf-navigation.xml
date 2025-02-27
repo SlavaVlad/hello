@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thymeleaf-extras>
+    <dialect>
+        <name>Navigation Dialect</name>
+        <prefix>nav</prefix>
+        <attributes>
+            <attribute>
+                <name>currentItemIndex</name>
+                <required>true</required>
+                <type>java.lang.Integer</type>
+                <description>Индекс текущего элемента навигации</description>
+            </attribute>
+        </attributes>
+        <elements>
+            <element>
+                <name>navigation</name>
+                <description>Кастомный элемент навигации</description>
+            </element>
+        </elements>
+    </dialect>
+</thymeleaf-extras>
